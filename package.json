@@ -1,0 +1,162 @@
+{
+  "name": "copilot-assets-studio",
+  "version": "1.0.0-Alpha",
+  "description": "Visual editor for AI agent frontmatter in Markdown, YAML, and JSON files.",
+  "main": "src/extension.js",
+  "scripts": {
+    "test": "node --test",
+    "lint": "node --check src/extension.js && node --check src/frontmatter.js && node --check src/tokenEstimate.js && node --check src/assets/assetProvider.js && node --check src/artifacts/agentArtifact.js && node --check src/artifacts/skillArtifact.js && node --check src/artifacts/promptArtifact.js && node --check src/editors/artifactEditor.js && node --check src/editors/agentEditor.js && node --check src/editors/skillEditor.js && node --check src/editors/promptEditor.js && node --check src/editors/frontmatterEditor.js && node --check test/frontmatter.test.js && node --check test/markdownPreview.test.js && node --check test/tokenEstimate.test.js && node --check media/webview/markdownPreview.js && node --check media/webview/tokenCounter.js && node --check media/artifacts/agent/editor.js && node --check media/artifacts/skill/editor.js && node --check media/artifacts/prompt/editor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marrubio/copilot-assets-studio"
+  },
+  "keywords": [],
+  "author": "marrubio <marugi@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "markdown-it": "^15.0.2",
+    "yaml": "^2.9.1"
+  },
+  "type": "commonjs",
+  "engines": {
+    "vscode": "^1.106.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:copilotAssets",
+    "onCommand:copilotAssetsStudio.openAgent",
+    "onCommand:copilotAssetsStudio.createAgent",
+    "onCommand:copilotAssetsStudio.openSkill",
+    "onCommand:copilotAssetsStudio.createSkill",
+    "onCommand:copilotAssetsStudio.openPrompt",
+    "onCommand:copilotAssetsStudio.createPrompt",
+    "onCommand:copilotAssetsStudio.openFrontmatter"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "copilotAssetsStudio",
+          "title": "Copilot Assets",
+          "icon": "media/copilot-assets.svg"
+        }
+      ]
+    },
+    "views": {
+      "copilotAssetsStudio": [
+        {
+          "id": "copilotAssets",
+          "name": "Copilot Assets",
+          "contextualTitle": "Copilot Assets"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "copilotAssetsStudio.openAgent",
+        "title": "Open Agent Form"
+      },
+      {
+        "command": "copilotAssetsStudio.createAgent",
+        "title": "Create Agent"
+      },
+      {
+        "command": "copilotAssetsStudio.openSkill",
+        "title": "Open Skill Form"
+      },
+      {
+        "command": "copilotAssetsStudio.createSkill",
+        "title": "Create Skill"
+      },
+      {
+        "command": "copilotAssetsStudio.openPrompt",
+        "title": "Open Prompt Form"
+      },
+      {
+        "command": "copilotAssetsStudio.createPrompt",
+        "title": "Create Prompt"
+      },
+      {
+        "command": "copilotAssetsStudio.openFrontmatter",
+        "title": "Frontmatter View"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "copilotAssetsStudio.openFrontmatter",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "copilotAssetsStudio.openFrontmatter",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "copilotAssetsStudio.openFrontmatter",
+          "when": "resourceExtname == .md",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "copilotAssetsStudio.createAgent",
+          "when": "view == copilotAssets",
+          "group": "navigation"
+        },
+        {
+          "command": "copilotAssetsStudio.createSkill",
+          "when": "view == copilotAssets",
+          "group": "navigation"
+        },
+        {
+          "command": "copilotAssetsStudio.createPrompt",
+          "when": "view == copilotAssets",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Copilot Assets Studio",
+      "properties": {
+        "copilotAssetsStudio.modelOptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "Claude Opus 4.5 (copilot)",
+            "Claude Sonnet 4.5 (copilot)",
+            "GPT-5 (copilot)",
+            "GPT-5.2 (copilot)",
+            "GPT-5.6 Luna (copilot)",
+            "GPT-5.6 Terra (copilot)",
+            "GPT-5.6 Sol (copilot)",
+            "Kimi K2.7 Code (copilot)",
+            "Kimi K3 (copilot)",
+            "MAI-Code-1.1-Flash (copilot)",
+            "Grok 4.5 (copilot)",
+            "Grok 4.6 (copilot)",
+            "Gemini 3.5 Flash (copilot)",
+            "Gemini 3.6 Flash (copilot)",
+            "Gemini 3.7 Flash (copilot)",
+            "Gemini 3.8 Flash (copilot)",
+            "Gemini 2.5 Pro (copilot)"
+          ],
+          "description": "Models offered by the agent editor. Use the model names supported by your Copilot subscription."
+        }
+      }
+    }
+  },
+  "displayName": "Copilot Assets Studio",
+  "publisher": "marrubio",
+  "private": true
+}
