@@ -6,6 +6,7 @@ let diagnosticsOpen = true;
 let diagnosticsRevision = 0;
 let diagnosticsTimer;
 const docs = {
+  repository: 'https://github.com/marrubio/copilot-assets-studio',
   github: 'https://docs.github.com/en/copilot/reference/custom-agents-configuration',
   vscode: 'https://code.visualstudio.com/docs/agent-customization/custom-agents'
 };
@@ -106,7 +107,7 @@ function render() {
   cards.push(pairsCard('metadata', 'metadata'));
   cards.push(fieldCard('extra properties', '<textarea data-yaml="extra">' + escapeHtml(state.extraPropertiesYaml) + '</textarea>', 'Unknown keys are preserved.'));
   cards.push('<section class="form-section full-width"><div class="body-grid"><div><label for="body">Prompt body (Markdown)</label><textarea id="body">' + escapeHtml(state.body) + '</textarea></div><div><label>Rendered preview</label><div id="bodyPreview" class="markdown-preview"></div></div></div></section>');
-  root.innerHTML = '<details id="agentDiagnostics" class="agent-diagnostics" ' + (diagnosticsOpen ? 'open' : '') + '><summary></summary><div class="diagnostic-content" role="status" aria-live="polite"><ul class="diagnostic-list"></ul><button class="secondary" data-open-source hidden>Open source file</button></div></details><div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button><button class="secondary" data-doc="vscode">VS Code docs</button></div></section>';
+  root.innerHTML = '<details id="agentDiagnostics" class="agent-diagnostics" ' + (diagnosticsOpen ? 'open' : '') + '><summary></summary><div class="diagnostic-content" role="status" aria-live="polite"><ul class="diagnostic-list"></ul><button class="secondary" data-open-source hidden>Open source file</button></div></details><div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button><button class="secondary" data-doc="vscode">VS Code docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
   bind();
   renderDiagnostics();
   document.getElementById('bodyPreview').innerHTML = renderMarkdown(state.body || '');

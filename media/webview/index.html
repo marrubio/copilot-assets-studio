@@ -7,11 +7,14 @@
   <title>{{TITLE}}</title>
   <style>{{STYLE}}</style>
 </head>
-<body data-fallback-title="{{TITLE}}">
+<body data-fallback-title="{{TITLE}}" data-artifact="{{KIND}}">
   <header class="actions">
-    <div>
-      <h1>{{TITLE}}</h1>
-      <div class="muted">{{DESCRIPTION}}</div>
+    <div class="artifact-identity">
+      <span class="artifact-icon" aria-hidden="true">{{ICON}}</span>
+      <div class="artifact-heading">
+        <span class="artifact-kind">{{KIND_LABEL}} / AI artifact</span>
+        <h1>{{TITLE}}</h1>
+      </div>
     </div>
     <div class="token-estimate" id="tokenEstimate" title="Approximate tokens for the frontmatter (YAML and delimiters) and Markdown. Actual tokens depend on the model; this is not a price or a full conversation cost."></div>
     <div class="status badge" id="status">Ready</div>

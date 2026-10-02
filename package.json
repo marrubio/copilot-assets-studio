@@ -1,6 +1,6 @@
 {
   "name": "copilot-assets-studio",
-  "version": "1.0.0-Alpha",
+  "version": "1.1.0",
   "description": "Visual editor for AI agent frontmatter in Markdown, YAML, and JSON files.",
   "main": "src/extension.js",
   "scripts": {
@@ -140,6 +140,9 @@
             "GPT-5.6 Luna (copilot)",
             "GPT-5.6 Terra (copilot)",
             "GPT-5.6 Sol (copilot)",
+            "GPT-6 Luna (copilot)",
+            "GPT-6 Astra (copilot)",
+            "GPT-6 Sol (copilot)",
             "Kimi K2.7 Code (copilot)",
             "Kimi K3 (copilot)",
             "MAI-Code-1.1-Flash (copilot)",
