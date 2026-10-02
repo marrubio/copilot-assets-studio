@@ -1,7 +1,8 @@
 {
   "name": "copilot-assets-studio",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Visual editor for AI agent frontmatter in Markdown, YAML, and JSON files.",
+  "icon": "media/extension-icon.png",
   "main": "src/extension.js",
   "scripts": {
     "test": "node --test",
