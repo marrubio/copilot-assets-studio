@@ -4,9 +4,9 @@ Visually edit the YAML frontmatter of AI artifacts.
 
 ![Copilot Assets Studio agent editor showing artifact validation, token estimates, and frontmatter fields](media/screenshots/agent-editor.png)
 
-## 🚀 Current MVP
+## Features
 
-This project contains a minimal Visual Studio Code extension that:
+This Visual Studio Code extension:
 
 - discovers Copilot/Agent Customizations assets in the workspace
 - displays a **Copilot Assets** sidebar tree with Agents, Skills, Instructions, Prompts, MCP Servers, and Plugins
