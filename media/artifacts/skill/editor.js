@@ -2,6 +2,7 @@ const root = document.getElementById('artifactRoot');
 const status = document.getElementById('status');
 const state = initial.state;
 const docs = {
+  repository: 'https://github.com/marrubio/copilot-assets-studio',
   github: 'https://docs.github.com/en/copilot/concepts/agents/about-agent-skills'
 };
 
@@ -28,7 +29,7 @@ function render() {
     + '<section class="form-section"><div class="section-heading"><h2>name</h2><div class="muted">Optional skill identifier. If omitted, the directory name is used.</div></div><input id="name" value="' + escapeHtml(f.name.value) + '"></section>'
     + '<section class="form-section"><div class="section-heading"><h2>extra properties</h2><div class="muted">Unknown keys are preserved.</div></div><textarea data-yaml="extra">' + escapeHtml(state.extraPropertiesYaml) + '</textarea></section>'
     + '<section class="form-section full-width"><div class="body-grid"><div><label for="body">Instructions (Markdown)</label><textarea id="body">' + escapeHtml(state.body) + '</textarea></div><div><label>Rendered preview</label><div id="bodyPreview" class="markdown-preview"></div></div></div></section>'
-    + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button></div></section>';
+    + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
   bind();
   document.getElementById('bodyPreview').innerHTML = renderMarkdown(state.body || '');
 }

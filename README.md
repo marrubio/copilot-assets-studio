@@ -2,6 +2,8 @@
 
 Visually edit the YAML frontmatter of AI artifacts.
 
+![Copilot Assets Studio agent editor showing artifact validation, token estimates, and frontmatter fields](media/screenshots/agent-editor.png)
+
 ## 🚀 Current MVP
 
 This project contains a minimal Visual Studio Code extension that:
@@ -28,59 +30,8 @@ in VS Code settings with `copilotAssetsStudio.modelOptions`, for example:
 }
 ```
 
-## 🧪 Scripts
-
-```bash
-npm test
-npm run lint
-```
-
-## Install in Visual Studio Code
-
-Requires Node.js, npm, and VS Code 1.106.0 or newer. From the project root,
-build a VSIX package:
-
-```bash
-npm install
-npx --yes @vscode/vsce package
-```
-
-In VS Code, open **Extensions** (`Ctrl+Shift+X`), select the `...` menu, and
-choose **Install from VSIX...**. Select the generated
-`copilot-assets-studio-x.y.z.vsix` file and reload VS Code if prompted.
-The **Copilot Assets** view will appear in the activity bar.
-
-## 🛠️ Test the extension in Visual Studio Code
-
-1. Install the dependencies from the integrated terminal:
-
-  ```bash
-  npm install
-  ```
-
-2. Press `F5`, or open **Run and Debug** and select **Run Extension**. VS Code will open an **Extension Development Host** window with the extension loaded.
-
-3. In the development window, create a `.github/agents/test.agent.md` file with the following content:
-
-  ```markdown
-  ---
-  name: Test Agent
-  description: A test agent for Copilot Assets Studio
-  tools:
-    - read
-    - search
-  ---
-
-  You are a test agent.
-  ```
-
-4. Open the **Copilot Assets** view in the activity bar. The file should appear under **Agents**.
-
-5. Click the agent to open the visual editor, modify a field, and click **Save**. Verify that the Markdown file was updated.
-
-To debug the extension, set breakpoints in `src/extension.js` and reload the **Extension Development Host** window with `Ctrl+R`.
-
-The extension does not require a build step. `npm install` is required because the parser uses the `yaml` package.
+For local development, testing, and packaging instructions, see
+[DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## References
 

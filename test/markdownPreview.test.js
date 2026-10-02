@@ -31,7 +31,7 @@ test('webview HTML embeds valid scripts for every artifact', async () => {
     Module._load = originalLoad;
   }
 
-  for (const kind of ['agent', 'prompt', 'skill']) {
+  for (const [kind, icon] of [['agent', '\u2726'], ['prompt', '\u203a'], ['skill', '\u25c8']]) {
     const state = { body: '```js\nconst answer = "$& $\'";\n```', fields: {} };
     const artifact = {
       key: kind,
@@ -43,6 +43,11 @@ test('webview HTML embeds valid scripts for every artifact', async () => {
     const script = html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)?.[1];
 
     assert.ok(script, `${kind} webview script exists`);
+    assert.match(script, /repository: 'https:\/\/github\.com\/marrubio\/copilot-assets-studio'/);
+    assert.match(script, /data-doc="repository">Source repository<\/button>/);
+    assert.match(html, new RegExp(`<body[^>]+data-artifact="${kind}"`));
+    assert.match(html, new RegExp(`<span class="artifact-kind">${kind} / AI artifact<\\/span>`));
+    assert.ok(html.includes(`<span class="artifact-icon" aria-hidden="true">${icon}</span>`));
     assert.doesNotMatch(script, /\{\{SCRIPT\}\}/);
     assert.doesNotThrow(() => new vm.Script(script), `${kind} webview script parses`);
     assert.equal(JSON.parse(html.match(/<script type="application\/json" id="initial-state">([^<]+)<\/script>/)[1]).state.body, state.body);
