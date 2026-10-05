@@ -4,6 +4,7 @@ const YAML = require('yaml');
 const { openAgentEditor } = require('./agentEditor');
 const { openSkillEditor } = require('./skillEditor');
 const { openPromptEditor } = require('./promptEditor');
+const { openInstructionEditor } = require('./instructionEditor');
 
 function getFrontmatterArtifact(uri) {
   const filePath = uri?.fsPath || '';
@@ -20,11 +21,17 @@ function getFrontmatterArtifact(uri) {
   if (pathSegments.includes('prompts')) {
     return 'prompt';
   }
+  if (pathSegments.includes('instructions')) {
+    return 'instruction';
+  }
   if (fileName.endsWith('.agent.md')) {
     return 'agent';
   }
   if (fileName.endsWith('.prompt.md')) {
     return 'prompt';
+  }
+  if (fileName.endsWith('.instructions.md')) {
+    return 'instruction';
   }
   if (fileName === 'skill.md') {
     return 'skill';
@@ -67,8 +74,10 @@ async function openFrontmatterEditor(context, uri, provider) {
     await openSkillEditor(context, uri, provider);
   } else if (artifact === 'prompt') {
     await openPromptEditor(context, uri, provider);
+  } else if (artifact === 'instruction') {
+    await openInstructionEditor(context, uri, provider);
   } else {
-    vscode.window.showInformationMessage('Select an agent, prompt, or skill Markdown file to open its frontmatter view.');
+    vscode.window.showInformationMessage('Select an agent, prompt, skill, or instruction Markdown file to open its frontmatter view.');
   }
 }
 

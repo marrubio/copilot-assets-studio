@@ -180,6 +180,21 @@ function createEmptyPromptState(uriPath = '') {
   };
 }
 
+function createEmptyInstructionState(uriPath = '') {
+  return {
+    path: uriPath,
+    body: '',
+    hasFrontmatter: true,
+    validationError: '',
+    extraPropertiesYaml: '',
+    fields: {
+      name: { enabled: false, value: '' },
+      description: { enabled: false, value: '' },
+      applyTo: { enabled: false, value: '' }
+    }
+  };
+}
+
 function parseAgentDocument(content, uriPath = '') {
   const state = createEmptyState(uriPath);
   const { frontmatterText, body, hasFrontmatter } = splitFrontmatter(content);
@@ -318,6 +333,47 @@ function parseSkillDocument(content, uriPath = '') {
   }
   if (parsed.description !== undefined) {
     state.fields.description = { enabled: true, value: `${parsed.description ?? ''}` };
+  }
+
+  return state;
+}
+
+function parseInstructionDocument(content, uriPath = '') {
+  const state = createEmptyInstructionState(uriPath);
+  const { frontmatterText, body, hasFrontmatter } = splitFrontmatter(content);
+  state.body = body;
+  state.hasFrontmatter = hasFrontmatter;
+
+  if (!hasFrontmatter) {
+    return state;
+  }
+
+  let parsed = {};
+  try {
+    parsed = YAML.parse(frontmatterText) || {};
+  } catch (error) {
+    state.validationError = error instanceof Error ? error.message : 'Invalid YAML frontmatter';
+    return state;
+  }
+
+  if (typeof parsed !== 'object' || Array.isArray(parsed) || parsed === null) {
+    state.validationError = 'Frontmatter must be a YAML object.';
+    return state;
+  }
+
+  const knownKeys = new Set(['name', 'description', 'applyTo']);
+  const extras = {};
+  for (const [key, value] of Object.entries(parsed)) {
+    if (!knownKeys.has(key)) {
+      extras[key] = value;
+    }
+  }
+
+  state.extraPropertiesYaml = toYamlBlock(extras);
+  for (const key of ['name', 'description', 'applyTo']) {
+    if (parsed[key] !== undefined) {
+      state.fields[key] = { enabled: true, value: `${parsed[key] ?? ''}` };
+    }
   }
 
   return state;
@@ -475,6 +531,25 @@ function validateSkillState(state) {
 
 function validatePromptState(state) {
   const errors = [];
+
+  try {
+    const extra = parseYamlOrDefault(state.extraPropertiesYaml, {});
+    if (state.extraPropertiesYaml.trim() && (Array.isArray(extra) || typeof extra !== 'object' || extra === null)) {
+      errors.push('Extra properties must be a YAML object.');
+    }
+  } catch (error) {
+    errors.push(`Invalid extra properties YAML: ${error.message}`);
+  }
+
+  return errors;
+}
+
+function validateInstructionState(state) {
+  const errors = [];
+
+  if (state.validationError) {
+    errors.push(`Invalid frontmatter YAML: ${state.validationError} Repair the source file and reopen the form.`);
+  }
 
   try {
     const extra = parseYamlOrDefault(state.extraPropertiesYaml, {});
@@ -684,6 +759,37 @@ function serializePromptDocument(state) {
   return `---\n${yamlText}\n---\n${body}`;
 }
 
+function buildInstructionFrontmatterObject(state) {
+  const errors = validateInstructionState(state);
+  if (errors.length) {
+    throw new Error(errors.join(' '));
+  }
+
+  const frontmatter = {};
+  for (const key of ['name', 'description', 'applyTo']) {
+    if (state.fields[key].enabled && state.fields[key].value.trim()) {
+      frontmatter[key] = state.fields[key].value.trim();
+    }
+  }
+
+  const extraProperties = parseYamlOrDefault(state.extraPropertiesYaml, {});
+  if (extraProperties && typeof extraProperties === 'object' && !Array.isArray(extraProperties)) {
+    Object.assign(frontmatter, extraProperties);
+  }
+
+  return frontmatter;
+}
+
+function serializeInstructionDocument(state) {
+  const frontmatter = buildInstructionFrontmatterObject(state);
+  const yamlText = YAML.stringify(frontmatter, {
+    defaultKeyType: 'PLAIN',
+    defaultStringType: 'QUOTE_SINGLE'
+  }).trim();
+  const body = state.body || '';
+  return `---\n${yamlText}\n---\n${body}`;
+}
+
 module.exports = {
   BUILT_IN_TOOL_ALIASES,
   MODEL_OPTIONS,
@@ -691,17 +797,22 @@ module.exports = {
   createEmptyState,
   createEmptySkillState,
   createEmptyPromptState,
+  createEmptyInstructionState,
   parseAgentDocument,
   parseSkillDocument,
   parsePromptDocument,
+  parseInstructionDocument,
   serializeAgentDocument,
   serializeSkillDocument,
   serializePromptDocument,
+  serializeInstructionDocument,
   buildFrontmatterObject,
   buildSkillFrontmatterObject,
   buildPromptFrontmatterObject,
+  buildInstructionFrontmatterObject,
   validateState,
   getAgentDiagnostics,
   validateSkillState,
-  validatePromptState
+  validatePromptState,
+  validateInstructionState
 };

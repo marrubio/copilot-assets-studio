@@ -6,6 +6,10 @@ const {
   parseSkillDocument,
   serializeSkillDocument,
   buildSkillFrontmatterObject,
+  parseInstructionDocument,
+  serializeInstructionDocument,
+  buildInstructionFrontmatterObject,
+  validateInstructionState,
   parsePromptDocument,
   serializePromptDocument,
   buildPromptFrontmatterObject,
@@ -43,6 +47,49 @@ test('serializeSkillDocument omits optional name and preserves extra properties'
   assert.equal('name' in frontmatter, false);
   assert.equal(frontmatter.license, 'MIT');
   assert.match(serialized, /# Workflow/);
+});
+
+test('parseInstructionDocument loads documented fields and preserves unknown properties', () => {
+  const state = parseInstructionDocument(`---
+name: JavaScript conventions
+description: Use when changing JavaScript source files
+applyTo: '**/*.js'
+future-option: true
+---
+# JavaScript conventions
+`, '/workspace/.github/instructions/javascript.instructions.md');
+
+  assert.equal(state.fields.name.value, 'JavaScript conventions');
+  assert.equal(state.fields.description.value, 'Use when changing JavaScript source files');
+  assert.equal(state.fields.applyTo.value, '**/*.js');
+  assert.match(state.extraPropertiesYaml, /future-option/);
+  assert.match(state.body, /JavaScript conventions/);
+});
+
+test('serializeInstructionDocument preserves optional values and validates extra properties', () => {
+  const state = parseInstructionDocument('---\napplyTo: "**/*.js"\n---\nBody');
+  state.fields.name = { enabled: true, value: 'JavaScript conventions' };
+  state.fields.description = { enabled: true, value: '' };
+  state.extraPropertiesYaml = 'future-option: true';
+
+  const serialized = serializeInstructionDocument(state);
+  const frontmatter = buildInstructionFrontmatterObject(parseInstructionDocument(serialized));
+
+  assert.equal(frontmatter.name, 'JavaScript conventions');
+  assert.equal(frontmatter.applyTo, '**/*.js');
+  assert.equal('description' in frontmatter, false);
+  assert.equal(frontmatter['future-option'], true);
+
+  state.extraPropertiesYaml = '- invalid';
+  assert.match(validateInstructionState(state).join(' '), /Extra properties must be a YAML object/);
+});
+
+test('parseInstructionDocument reports invalid frontmatter without losing the body', () => {
+  const state = parseInstructionDocument('---\nname: [broken\n---\n# Instructions');
+
+  assert.match(state.validationError, /Flow sequence/);
+  assert.equal(state.body, '# Instructions');
+  assert.match(validateInstructionState(state).join(' '), /Invalid frontmatter YAML/);
 });
 
 test('parsePromptDocument loads all documented prompt fields', () => {

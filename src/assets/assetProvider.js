@@ -23,7 +23,8 @@ const CATEGORY_DEFINITIONS = [
     label: 'Instructions',
     icon: 'book',
     patterns: ['.github/instructions/**/*.instructions.md'],
-    editable: false
+    editable: true,
+    openCommand: 'copilotAssetsStudio.openInstruction'
   },
   {
     key: 'prompts',
