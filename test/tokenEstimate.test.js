@@ -4,9 +4,11 @@ const {
   parseAgentDocument,
   parsePromptDocument,
   parseSkillDocument,
+  parseInstructionDocument,
   serializeAgentDocument,
   serializePromptDocument,
-  serializeSkillDocument
+  serializeSkillDocument,
+  serializeInstructionDocument
 } = require('../src/frontmatter');
 const { estimateTokens, estimateTokenBreakdown, estimateArtifactTokens } = require('../src/tokenEstimate');
 
@@ -14,7 +16,8 @@ test('estimates tokens from YAML and Markdown for each artifact', () => {
   for (const [parse, serialize] of [
     [parseAgentDocument, serializeAgentDocument],
     [parsePromptDocument, serializePromptDocument],
-    [parseSkillDocument, serializeSkillDocument]
+    [parseSkillDocument, serializeSkillDocument],
+    [parseInstructionDocument, serializeInstructionDocument]
   ]) {
     const state = parse('---\ndescription: Example\n---\nBody');
     const artifact = { serialize };

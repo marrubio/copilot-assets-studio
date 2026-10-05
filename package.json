@@ -6,7 +6,7 @@
   "main": "src/extension.js",
   "scripts": {
     "test": "node --test",
-    "lint": "node --check src/extension.js && node --check src/frontmatter.js && node --check src/tokenEstimate.js && node --check src/assets/assetProvider.js && node --check src/artifacts/agentArtifact.js && node --check src/artifacts/skillArtifact.js && node --check src/artifacts/promptArtifact.js && node --check src/editors/artifactEditor.js && node --check src/editors/agentEditor.js && node --check src/editors/skillEditor.js && node --check src/editors/promptEditor.js && node --check src/editors/frontmatterEditor.js && node --check test/frontmatter.test.js && node --check test/markdownPreview.test.js && node --check test/tokenEstimate.test.js && node --check media/webview/markdownPreview.js && node --check media/webview/tokenCounter.js && node --check media/artifacts/agent/editor.js && node --check media/artifacts/skill/editor.js && node --check media/artifacts/prompt/editor.js"
+    "lint": "node --check src/extension.js && node --check src/frontmatter.js && node --check src/tokenEstimate.js && node --check src/assets/assetProvider.js && node --check src/artifacts/agentArtifact.js && node --check src/artifacts/skillArtifact.js && node --check src/artifacts/promptArtifact.js && node --check src/artifacts/instructionArtifact.js && node --check src/editors/artifactEditor.js && node --check src/editors/agentEditor.js && node --check src/editors/skillEditor.js && node --check src/editors/promptEditor.js && node --check src/editors/instructionEditor.js && node --check src/editors/frontmatterEditor.js && node --check test/frontmatter.test.js && node --check test/markdownPreview.test.js && node --check test/tokenEstimate.test.js && node --check media/webview/markdownPreview.js && node --check media/webview/tokenCounter.js && node --check media/artifacts/agent/editor.js && node --check media/artifacts/skill/editor.js && node --check media/artifacts/prompt/editor.js && node --check media/artifacts/instruction/editor.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,8 @@
     "onCommand:copilotAssetsStudio.createSkill",
     "onCommand:copilotAssetsStudio.openPrompt",
     "onCommand:copilotAssetsStudio.createPrompt",
+    "onCommand:copilotAssetsStudio.openInstruction",
+    "onCommand:copilotAssetsStudio.createInstruction",
     "onCommand:copilotAssetsStudio.openFrontmatter"
   ],
   "contributes": {
@@ -81,6 +83,14 @@
         "title": "Create Prompt"
       },
       {
+        "command": "copilotAssetsStudio.openInstruction",
+        "title": "Open Instruction Form"
+      },
+      {
+        "command": "copilotAssetsStudio.createInstruction",
+        "title": "Create Instruction"
+      },
+      {
         "command": "copilotAssetsStudio.openFrontmatter",
         "title": "Frontmatter View"
       }
@@ -120,6 +130,11 @@
         },
         {
           "command": "copilotAssetsStudio.createPrompt",
+          "when": "view == copilotAssets",
+          "group": "navigation"
+        },
+        {
+          "command": "copilotAssetsStudio.createInstruction",
           "when": "view == copilotAssets",
           "group": "navigation"
         }

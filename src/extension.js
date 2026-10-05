@@ -3,6 +3,7 @@ const { CopilotAssetsProvider } = require('./assets/assetProvider');
 const { openAgentEditor, createAgent } = require('./editors/agentEditor');
 const { openSkillEditor, createSkill } = require('./editors/skillEditor');
 const { openPromptEditor, createPrompt } = require('./editors/promptEditor');
+const { openInstructionEditor, createInstruction } = require('./editors/instructionEditor');
 const { openFrontmatterEditor } = require('./editors/frontmatterEditor');
 
 function activate(context) {
@@ -15,6 +16,8 @@ function activate(context) {
     vscode.commands.registerCommand('copilotAssetsStudio.createSkill', () => createSkill(context, provider)),
     vscode.commands.registerCommand('copilotAssetsStudio.openPrompt', (uri) => openPromptEditor(context, uri, provider)),
     vscode.commands.registerCommand('copilotAssetsStudio.createPrompt', () => createPrompt(context, provider)),
+    vscode.commands.registerCommand('copilotAssetsStudio.openInstruction', (uri) => openInstructionEditor(context, uri, provider)),
+    vscode.commands.registerCommand('copilotAssetsStudio.createInstruction', () => createInstruction(context, provider)),
     vscode.commands.registerCommand('copilotAssetsStudio.openFrontmatter', (uri) => openFrontmatterEditor(context, uri, provider)),
     vscode.workspace.onDidCreateFiles(() => provider.refresh()),
     vscode.workspace.onDidDeleteFiles(() => provider.refresh()),

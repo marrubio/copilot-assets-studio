@@ -31,7 +31,7 @@ test('webview HTML embeds valid scripts for every artifact', async () => {
     Module._load = originalLoad;
   }
 
-  for (const [kind, icon] of [['agent', '\u2726'], ['prompt', '\u203a'], ['skill', '\u25c8']]) {
+  for (const [kind, icon] of [['agent', '\u2726'], ['prompt', '\u203a'], ['skill', '\u25c8'], ['instruction', '\u2261']]) {
     const state = { body: '```js\nconst answer = "$& $\'";\n```', fields: {} };
     const artifact = {
       key: kind,
@@ -48,6 +48,10 @@ test('webview HTML embeds valid scripts for every artifact', async () => {
     assert.match(html, new RegExp(`<body[^>]+data-artifact="${kind}"`));
     assert.match(html, new RegExp(`<span class="artifact-kind">${kind} / AI artifact<\\/span>`));
     assert.ok(html.includes(`<span class="artifact-icon" aria-hidden="true">${icon}</span>`));
+    if (kind === 'prompt') {
+      assert.match(script, /Prompt files are deprecated/);
+      assert.match(script, /Migrate reusable prompts to agent skills/);
+    }
     assert.doesNotMatch(script, /\{\{SCRIPT\}\}/);
     assert.doesNotThrow(() => new vm.Script(script), `${kind} webview script parses`);
     assert.equal(JSON.parse(html.match(/<script type="application\/json" id="initial-state">([^<]+)<\/script>/)[1]).state.body, state.body);

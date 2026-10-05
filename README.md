@@ -14,7 +14,8 @@ This Visual Studio Code extension:
 - shows collapsible, live validation and advice in the agent form (including YAML errors, unknown properties, and GitHub cloud's 30,000-character instruction limit)
 - shows separate approximate token counts for YAML frontmatter and Markdown, plus their total, in agent, prompt, and skill forms; each section uses UTF-8 bytes / 4 (rounded up), not a model-specific bill or total conversation cost
 - lets you create and edit `SKILL.md` files through a visual form
-- lets you create and edit `*.prompt.md` files through a visual form
+- lets you create and edit `*.instructions.md` files through a visual form
+- lets you create and edit `*.prompt.md` files through a visual form; prompt files are deprecated and reusable prompts should migrate to agent skills
 - supports the officially documented properties for agent frontmatter:
 - preserves extra properties through an advanced YAML block
 

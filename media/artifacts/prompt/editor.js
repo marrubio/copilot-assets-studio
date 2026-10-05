@@ -3,7 +3,8 @@ const status = document.getElementById('status');
 const state = initial.state;
 const docs = {
   repository: 'https://github.com/marrubio/copilot-assets-studio',
-  vscode: 'https://code.visualstudio.com/docs/agent-customization/prompt-files'
+  vscode: 'https://code.visualstudio.com/docs/agent-customization/prompt-files',
+  skills: 'https://docs.github.com/en/copilot/concepts/agents/about-agent-skills'
 };
 
 function escapeHtml(value) {
@@ -54,7 +55,7 @@ function render() {
     fieldCard('extra properties', '<textarea data-yaml="extra">' + escapeHtml(state.extraPropertiesYaml) + '</textarea>', 'Unknown keys are preserved.'),
     '<section class="form-section full-width"><div class="body-grid"><div><label for="body">Prompt body (Markdown)</label><textarea id="body">' + escapeHtml(state.body) + '</textarea></div><div><label>Rendered preview</label><div id="bodyPreview" class="markdown-preview"></div></div></div></section>'
   ];
-  root.innerHTML = '<div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="vscode">VS Code docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
+  root.innerHTML = '<section class="notice" role="note"><h2>Prompt files are deprecated</h2><p>Migrate reusable prompts to agent skills. Existing prompt files remain editable and can still be created.</p><button class="secondary" data-doc="skills">Learn about agent skills</button></section><div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="vscode">VS Code docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
   bind();
   document.getElementById('bodyPreview').innerHTML = renderMarkdown(state.body || '');
 }

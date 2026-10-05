@@ -44,7 +44,7 @@ async function getArtifactEditorHtml(context, webview, artifact, state, fileCont
   ]);
   const nonce = getNonce();
   const title = escapeHtml(getDisplayTitle(artifact, state));
-  const icons = { agent: '\u2726', skill: '\u25c8', prompt: '\u203a' };
+  const icons = { agent: '\u2726', skill: '\u25c8', prompt: '\u203a', instruction: '\u2261' };
   const artifactData = typeof artifact.getInitialData === 'function' ? await artifact.getInitialData() : artifact.initialData;
   const initial = serializeState({ state, tokenEstimate: fileContent === undefined ? estimateArtifactTokens(artifact, state) : estimateTokenBreakdown(fileContent, state.body), diagnostics: artifact.getDiagnostics?.(state), ...artifactData });
   const script = `${markdownLibrary}\n${markdownPreview}\nconst initial = JSON.parse(document.getElementById('initial-state').textContent);\n${renderer}\n${tokenCounter}`;
