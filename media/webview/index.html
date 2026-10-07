@@ -18,12 +18,14 @@
     </div>
     <div class="token-estimate" id="tokenEstimate" title="Approximate tokens for the frontmatter (YAML and delimiters) and Markdown. Actual tokens depend on the model; this is not a price or a full conversation cost."></div>
     <div class="status badge" id="status">Ready</div>
+    <button id="sourceButton">Source view</button>
     <button id="saveButton">Save</button>
   </header>
   <main id="artifactRoot"></main>
   <script type="application/json" id="initial-state">{{STATE}}</script>
   <script nonce="{{NONCE}}">
     const vscode = acquireVsCodeApi();
+    document.getElementById('sourceButton').addEventListener('click', () => vscode.postMessage({ type: 'openSource' }));
     {{SCRIPT}}
   </script>
 </body>

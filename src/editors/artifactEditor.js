@@ -72,10 +72,9 @@ async function openArtifactEditor(context, uri, provider, artifact) {
   }
 
   const state = artifact.parse(fileContent, uri.fsPath);
-  const displayTitle = getDisplayTitle(artifact, state);
   const panel = vscode.window.createWebviewPanel(
     `copilotAssetsStudio.${artifact.key}Editor`,
-    `${displayTitle}: ${path.basename(uri.fsPath)}`,
+    `copilot-asset: ${path.basename(uri.fsPath)}`,
     vscode.ViewColumn.One,
     { enableScripts: true }
   );
@@ -99,7 +98,7 @@ async function openArtifactEditor(context, uri, provider, artifact) {
       return;
     }
 
-    if (message?.type === 'openSource' && artifact.getDiagnostics) {
+    if (message?.type === 'openSource') {
       await vscode.window.showTextDocument(uri);
       return;
     }
