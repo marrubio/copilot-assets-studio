@@ -507,6 +507,11 @@ function getAgentDiagnostics(state) {
     warnings.push(`Agent instructions exceed GitHub Copilot cloud's 30,000-character limit (${(state.body || '').length} characters). Shorten the Markdown body for cloud use.`);
   }
 
+  const tools = state.fields.tools;
+  if (!tools.enabled || tools.mode === 'all' || (tools.mode === 'selected' && normalizeList(tools.items).length === 0)) {
+    warnings.push('The agent has access to all tools; review the configuration to adhere to the principle of least privilege.');
+  }
+
   return { errors, warnings };
 }
 

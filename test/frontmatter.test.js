@@ -364,7 +364,7 @@ test('agent diagnostics distinguish validation errors from unknown-property advi
 });
 
 test('agent diagnostics warn about GitHub cloud body limit only when cloud can be targeted', () => {
-  const state = parseAgentDocument('---\ndescription: Test\n---\n');
+  const state = parseAgentDocument('---\ndescription: Test\ntools: [read]\n---\n');
   state.body = 'a'.repeat(30001);
 
   assert.match(getAgentDiagnostics(state).warnings.join(' '), /30,000-character limit/);
@@ -378,4 +378,12 @@ test('agent diagnostics explain when frontmatter will be created', () => {
   const state = parseAgentDocument('Just instructions');
 
   assert.match(getAgentDiagnostics(state).warnings.join(' '), /No YAML frontmatter found/);
+});
+
+test('agent diagnostics warn when the agent has access to all tools', () => {
+  const pattern = /access to all tools.*least privilege/;
+  assert.match(getAgentDiagnostics(parseAgentDocument('---\ndescription: Test\n---\n')).warnings.join(' '), pattern);
+  assert.match(getAgentDiagnostics(parseAgentDocument('---\ntools: ["*"]\n---\n')).warnings.join(' '), pattern);
+  assert.doesNotMatch(getAgentDiagnostics(parseAgentDocument('---\ntools: [read]\n---\n')).warnings.join(' '), pattern);
+  assert.doesNotMatch(getAgentDiagnostics(parseAgentDocument('---\ntools: []\n---\n')).warnings.join(' '), pattern);
 });
