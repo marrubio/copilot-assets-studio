@@ -43,6 +43,8 @@ test('webview HTML embeds valid scripts for every artifact', async () => {
     const script = html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)?.[1];
 
     assert.ok(script, `${kind} webview script exists`);
+    assert.match(html, /<button id="sourceButton">Source view<\/button>/);
+    assert.match(script, /getElementById\('sourceButton'\).*type: 'openSource'/);
     assert.match(script, /repository: 'https:\/\/github\.com\/marrubio\/copilot-assets-studio'/);
     assert.match(script, /data-doc="repository">Source repository<\/button>/);
     assert.match(html, new RegExp(`<body[^>]+data-artifact="${kind}"`));

@@ -52,7 +52,6 @@ function renderDiagnostics() {
     ? errors.map((message) => '<li class="diagnostic-error">Error: ' + escapeHtml(message) + '</li>').join('')
       + warnings.map((message) => '<li>Tip: ' + escapeHtml(message) + '</li>').join('')
     : '<li>Frontmatter and instructions look good.</li>';
-  panel.querySelector('[data-open-source]').hidden = !state.validationError;
 }
 
 function fieldCard(title, content, description) {
@@ -107,7 +106,7 @@ function render() {
   cards.push(pairsCard('metadata', 'metadata'));
   cards.push(fieldCard('extra properties', '<textarea data-yaml="extra">' + escapeHtml(state.extraPropertiesYaml) + '</textarea>', 'Unknown keys are preserved.'));
   cards.push('<section class="form-section full-width"><div class="body-grid"><div><label for="body">Prompt body (Markdown)</label><textarea id="body">' + escapeHtml(state.body) + '</textarea></div><div><label>Rendered preview</label><div id="bodyPreview" class="markdown-preview"></div></div></div></section>');
-  root.innerHTML = '<details id="agentDiagnostics" class="agent-diagnostics" ' + (diagnosticsOpen ? 'open' : '') + '><summary></summary><div class="diagnostic-content" role="status" aria-live="polite"><ul class="diagnostic-list"></ul><button class="secondary" data-open-source hidden>Open source file</button></div></details><div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button><button class="secondary" data-doc="vscode">VS Code docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
+  root.innerHTML = '<details id="agentDiagnostics" class="agent-diagnostics" ' + (diagnosticsOpen ? 'open' : '') + '><summary></summary><div class="diagnostic-content" role="status" aria-live="polite"><ul class="diagnostic-list"></ul></div></details><div class="grid">' + cards.join('') + '</div><section class="related-links"><h2>Related links</h2><div class="link-list"><button class="secondary" data-doc="github">GitHub docs</button><button class="secondary" data-doc="vscode">VS Code docs</button><button class="secondary" data-doc="repository">Source repository</button></div></section>';
   bind();
   renderDiagnostics();
   document.getElementById('bodyPreview').innerHTML = renderMarkdown(state.body || '');
@@ -115,7 +114,6 @@ function render() {
 
 function bind() {
   document.getElementById('agentDiagnostics').ontoggle = (event) => { diagnosticsOpen = event.target.open; };
-  document.querySelector('[data-open-source]').onclick = () => vscode.postMessage({ type: 'openSource' });
   document.getElementById('description').oninput = (event) => { state.fields.description.value = event.target.value; setStatus('Modified'); };
   document.getElementById('name').oninput = (event) => { state.fields.name.enabled = true; state.fields.name.value = event.target.value; updateTitle(event.target.value); setStatus('Modified'); };
   document.getElementById('argument-hint').oninput = (event) => { state.fields['argument-hint'].enabled = true; state.fields['argument-hint'].value = event.target.value; setStatus('Modified'); };

@@ -2,7 +2,7 @@
 
 Visually edit the YAML frontmatter of GitHub Copilot AI artifacts: agents, skills, instructions, and prompts.
 
-![Copilot Assets Studio agent editor showing artifact validation, token estimates, and frontmatter fields](media/screenshots/agent-editor.png)
+![Copilot Assets Studio agent editor showing artifact validation, token estimates, and frontmatter fields](media/screenshots/copilot-asset-studio.gif)
 
 ## Features
 
